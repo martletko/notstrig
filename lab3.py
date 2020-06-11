@@ -906,15 +906,19 @@ while x < 3:
                             t1_1 = 0
                             while t1 < 3:
                                 key_len_perestanovka = (input("enter key length... (int number) "))
-                                if key_len_perestanovka.isnumeric() == False:
+                                #для отрицательных чисел только, специально обрезаю минус слева
+                                key_len_perestanovka_bootleg = key_len_perestanovka.lstrip("-")
+                                if key_len_perestanovka_bootleg.isnumeric() == False:
                                     print("введите целое число")
                                     t1 += 1
                                     print("неверный ввод у вас осталось ", (3 - t1), "попыток")
+                                    continue
                                 key_len_perestanovka = int(key_len_perestanovka)
                                 if key_len_perestanovka < 1:
                                     print("не может быть отрицательным")
                                     t1 += 1
                                     print("неверный ввод у вас осталось ", (3 - t1), "попыток")
+                                    continue
                                 
                                 filepath = input("введите путь к тексту   ")
 
@@ -963,19 +967,24 @@ while x < 3:
                                     continue
 
                                 key_len_gamm = (input("enter key length... (int number) "))
-                                if key_len_gamm.isnumeric() == False:
+                                #для отрицательных чисел только, специально обрезаю минус слева
+                                key_len_gamm_bootleg = key_len_gamm.lstrip("-")
+                                if key_len_gamm_bootleg.isnumeric() == False:
                                     print("введите целое число")
                                     t3 += 1
                                     print("неверный ввод, до выхода из программы осталось ", (3 - t3),"попыток")
+                                    continue
                                 key_len_gamm = int(key_len_gamm)
                                 if key_len_gamm < 1:
                                     print("число не должно быть отрицательным")
                                     t3 += 1
                                     print("неверный ввод, до выхода из программы осталось ", (3 - t3),"попыток")
+                                    continue
                                 elif key_len_gamm > 29:
                                     print("не тратье время зря, введите длину ключа меньше 29")
                                     t3 += 1
                                     print("неверный ввод, до выхода из программы осталось ", (3 - t3),"попыток")
+                                    continue
                                 
                                 obj3 = shifr_gammirovanie()
                                 try:
