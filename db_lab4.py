@@ -2,7 +2,8 @@ import os
 from security_lab4 import *
 
 
-def writing(user_name: str, hashed_password: str, user_folder: str, master_key: str) -> None:
+def writing(user_name: str, hashed_password: str, user_folder: str,
+            master_key: str) -> None:
     name = "db.txt"
     location = os.getcwd()
     store_path = os.path.join(location, name)
@@ -50,6 +51,7 @@ def check_exists_db():
         data.append(no_err)
         return data
 
+
 def check_user_exists(user_name):
     user_name += '\n'
     name = "db.txt"
@@ -60,6 +62,7 @@ def check_user_exists(user_name):
             if i == user_name:
                 return True
     return False
+
 
 def collecting_information(user_name):
     name = "db.txt"
@@ -123,30 +126,52 @@ def delete_account(user_name):
 
 
 def change_key_shifr(user_name):
+    data = collecting_information(user_name)
+    user_password = data[1]
+    user_password = user_password.rstrip("\n")  # получили пароль
+
+    user_folder = data[2]  # получили папку
+    user_master_key_str = data[3]
+    user_master_key_str = user_master_key_str.rstrip("\n")
+    user_master_key = bytes.fromhex(user_master_key_str)
+
+    user_password_bytes = bytes(user_password, 'utf-8')
+
+    master_klyuchik = gen_user_secret_key(user_password_bytes)
+    master_klyuchik_str = master_klyuchik.hex()
+    master_klyuchik = bytes.fromhex(master_klyuchik_str)
+    real_master_key = decrypt(user_master_key, master_klyuchik)
+
+    new_klychik = gen_secret_key()
+    new_master_klychik = gen_user_secret_key(user_password_bytes)
+
+    # !!!
+    new_master_key = encrypt(new_klychik, new_master_klychik)
+    new_master_key_str = new_master_key.hex()
+
+    notes_arr = os.listdir(user_folder)
+    for note_name in notes_arr:
+        note_path = os.path.join(user_folder, note_name)
+        with open(note_path, 'r', encoding='utf-8') as file:
+            enc_note_hex = file.read()
+        enc_note_bytes = bytes.fromhex(enc_note_hex)
+        dec_note_bytes = decrypt(enc_note_bytes, real_master_key)
+        enc_new_note_bytes = encrypt(dec_note_bytes, new_klychik)
+        enc_new_note_str = enc_new_note_bytes.hex()
+        with open(note_path, "w", encoding='utf-8') as file:
+            file.write(enc_new_note_str)
+
     name = "db.txt"
     location = os.getcwd()
     store_path = os.path.join(location, name)
-    data = []
     new_name = "new_db.txt"
     new_store_path = os.path.join(location, new_name)
-    with open(store_path, "r", encoding='utf-8') as file:
-        for i in file:
-            login = i.strip("\n")
-            if login == user_name:
-                extra_line = file.readline()
-                extra_line = file.readline()
-                extra_line = file.readline()
-                data.append(extra_line)
     with open(store_path, 'r', encoding='utf-8') as file:
         old_data = file.read()
-    what_changes = data[0]
 
-    klyuchik = gen_secret_key()
-    master_klyuchik = gen_user_secret_key(klyuchik)
-    master_key = decrypt(klyuchik, master_klyuchik)
-    master_key = master_key.hex()
+    what_changes = data[3]
+    what_replaces = new_master_key_str
 
-    what_replaces = master_key
     new_data = old_data.replace(what_changes, what_replaces)
 
     with open(new_store_path, 'w', encoding='utf-8') as file:
