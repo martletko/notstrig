@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PySide2 import QtCore, QtGui, QtWidgets
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -15,71 +15,71 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(876, 735)
-        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
 
-        self.Enter_Login = QtGui.QLineEdit(self.centralwidget)
+        self.Enter_Login = QtWidgets.QLineEdit(self.centralwidget)
         self.Enter_Login.setGeometry(QtCore.QRect(50, 60, 191, 22))
         self.Enter_Login.setObjectName(_fromUtf8("Enter_Login"))
 
-        self.Date_And_Time = QtGui.QDateTimeEdit(self.centralwidget)
+        self.Date_And_Time = QtWidgets.QDateTimeEdit(self.centralwidget)
         self.Date_And_Time.setGeometry(QtCore.QRect(50, 30, 194, 22))
         self.Date_And_Time.setObjectName(_fromUtf8("Date_And_Time"))
 
-        self.tableWidget = QtGui.QTableWidget(self.centralwidget)
+        self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(20, 100, 821, 571))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
 
         '''
-        self.MyProgressBar = QtGui.QProgressBar(self.centralwidget)
+        self.MyProgressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.MyProgressBar.setGeometry(QtCore.QRect(710, 50, 118, 23))
         self.MyProgressBar.setProperty("value", 24)
         self.MyProgressBar.setObjectName(_fromUtf8("MyProgressBar"))
         '''
 
-        self.Sort_Date = QtGui.QPushButton(self.centralwidget)
+        self.Sort_Date = QtWidgets.QPushButton(self.centralwidget)
         self.Sort_Date.setGeometry(QtCore.QRect(270, 20, 93, 28))
         self.Sort_Date.setObjectName(_fromUtf8("Sort_Date"))
 
-        self.Sort_Login = QtGui.QPushButton(self.centralwidget)
+        self.Sort_Login = QtWidgets.QPushButton(self.centralwidget)
         self.Sort_Login.setGeometry(QtCore.QRect(270, 60, 93, 28))
         self.Sort_Login.setObjectName(_fromUtf8("Sort_Login"))
 
-        self.Save_Button = QtGui.QPushButton(self.centralwidget)
+        self.Save_Button = QtWidgets.QPushButton(self.centralwidget)
         self.Save_Button.setGeometry(QtCore.QRect(380, 60, 93, 28))
         self.Save_Button.setObjectName(_fromUtf8("Save_Button"))
 
-        self.Clear_Button = QtGui.QPushButton(self.centralwidget)
+        self.Clear_Button = QtWidgets.QPushButton(self.centralwidget)
         self.Clear_Button.setGeometry(QtCore.QRect(490, 60, 93, 28))
         self.Clear_Button.setObjectName(_fromUtf8("Clear_Button"))
 
-        self.Print_Button = QtGui.QPushButton(self.centralwidget)
+        self.Print_Button = QtWidgets.QPushButton(self.centralwidget)
         self.Print_Button.setGeometry(QtCore.QRect(600, 60, 93, 28))
         self.Print_Button.setObjectName(_fromUtf8("Print_Button"))
 
-        self.PageLineEdit = QtGui.QLineEdit(self.centralwidget)
+        self.PageLineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.PageLineEdit.setGeometry(QtCore.QRect(710, 60, 40, 22))
         self.PageLineEdit.setObjectName(_fromUtf8("enter_page_Num"))
 
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 876, 26))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtGui.QStatusBar(MainWindow)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
 

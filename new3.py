@@ -3,9 +3,9 @@ import time
 import os
 import csv
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtGui import QApplication, QMainWindow, QFont, QLineEdit, QFormLayout
+from PySide2.QtCore import SIGNAL
+from PySide2.QtGui import QFont
+from PySide2.QtWidgets import QApplication, QMainWindow, QLineEdit, QFormLayout, QInputDialog, QTableWidgetItem
 
 from interFace2 import Ui_MainWindow
 
@@ -19,7 +19,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self)
         self.setupUi(self)
 
-        logFolderName, ok = QtGui.QInputDialog.getText(self, "ввод логина", "введите логин для поиска", QtGui.QLineEdit.Normal)
+        logFolderName, ok = QInputDialog.getText(self, "ввод логина", "введите логин для поиска", QLineEdit.Normal)
         self.logPath = logFolderName
 
         self.Sort_Date.clicked.connect(self.on_Sort_Date_clicked)
@@ -68,7 +68,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for i in range(0, len(print_data)):
                 tokens = print_data[i]
                 for j in range(len(tokens)):
-                    obj = QtGui.QTableWidgetItem(tokens[j])
+                    obj = QTableWidgetItem(tokens[j])
                     self.tableWidget.setItem(i,j,obj)
             self.tableWidget.resizeColumnsToContents()
 
@@ -90,14 +90,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for i in range(0, len(print_data)):
                 tokens = print_data[i]
                 for j in range(len(tokens)):
-                    obj = QtGui.QTableWidgetItem(tokens[j])
+                    obj = QTableWidgetItem(tokens[j])
                     self.tableWidget.setItem(i,j,obj)
             self.tableWidget.resizeColumnsToContents()
 
     def on_Save_Button_clicked(self):
         number_of_rows = self.tableWidget.rowCount()
         number_of_columns = self.tableWidget.columnCount()
-        fileName, ok = QtGui.QInputDialog.getText(self, "ввод ", "введите имя файла без расширения", QtGui.QLineEdit.Normal)
+        fileName, ok = QInputDialog.getText(self, "ввод ", "введите имя файла без расширения", QLineEdit.Normal)
         fileName += '.csv'
         file_path = os.path.join(self.logPath, fileName)
         if number_of_rows == 0:
@@ -118,7 +118,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tableWidget.setColumnCount(len(hundred[0]))
             tokens = hundred[j]
             for k in range(0, len(tokens)):
-                obj = QtGui.QTableWidgetItem(tokens[k])
+                obj = QTableWidgetItem(tokens[k])
                 self.tableWidget.setItem(j,k,obj)
 
 
