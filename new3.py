@@ -5,11 +5,8 @@ import csv
 
 import PySide2
 
-from PySide2.QtWidgets import QApplication, QMainWindow, QLineEdit, QFormLayout, QInputDialog, QTableWidgetItem
-
-dirname = os.path.dirname(PySide2.__file__)
-plugin_path = os.path.join(dirname, 'plugins', 'platforms')
-os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
+from PySide2.QtWidgets import (QApplication, QMainWindow, QLineEdit,
+                               QFormLayout, QInputDialog, QTableWidgetItem)
 
 from interFace2 import Ui_MainWindow
 
@@ -18,12 +15,20 @@ import datetime
 import multiprocessing as mp
 
 
+dirname = os.path.dirname(PySide2.__file__)
+plugin_path = os.path.join(dirname, 'plugins', 'platforms')
+os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None, *args, **kwargs):
         QMainWindow.__init__(self)
         self.setupUi(self)
 
-        logFolderName, ok = QInputDialog.getText(self, "ввод логов", "введите путь до папки с логами", QLineEdit.Normal)
+        logFolderName, ok = QInputDialog.getText(self, "ввод логов",
+                                                 ("введите путь до папки" +
+                                                  "с логами"),
+                                                 QLineEdit.Normal)
         self.logPath = logFolderName
 
         self.Sort_Date.clicked.connect(self.on_Sort_Date_clicked)
@@ -46,7 +51,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.Clear_Button.setDisabled(True)
         num_of_page = self.PageLineEdit.text()
         logPath1 = self.logPath
-        self.myPool.apply_async(func=on_Print_Button_clicked_read, args=(num_of_page, logPath1), callback=self.on_Print_Button_clicked)
+        self.myPool.apply_async(func=on_Print_Button_clicked_read,
+                                args=(num_of_page, logPath1),
+                                callback=self.on_Print_Button_clicked)
 
     def on_Sort_Date_clicked(self):
         self.Sort_Date.setDisabled(True)
@@ -65,7 +72,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         minutes = data[1]
         date1 = date1.split(".")
         minutes = minutes.split(":")
-        unix_time = int(datetime.datetime(int(date1[2]), int(date1[1]),int(date1[0]), int(minutes[0]), int(minutes[1]), int(minutes[2])).timestamp())
+        unix_time = int(datetime.datetime(int(date1[2]), int(date1[1]),
+                        int(date1[0]), int(minutes[0]), int(minutes[1]),
+                        int(minutes[2])).timestamp())
         unix_time += 36000
         unix_time = str(unix_time)
         print_data = []
@@ -73,7 +82,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             log_path = os.path.join(self.logPath, log)
             with open(log_path, "r") as fileInput:
                 for row in csv.reader(fileInput):
-                    if str(unix_time) in row: 
+                    if str(unix_time) in row:
                         print_data.append(row)
         if print_data == []:
             pass
@@ -84,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 tokens = print_data[i]
                 for j in range(len(tokens)):
                     obj = QTableWidgetItem(tokens[j])
-                    self.tableWidget.setItem(i,j,obj)
+                    self.tableWidget.setItem(i, j, obj)
             self.tableWidget.resizeColumnsToContents()
 
         self.Sort_Date.setDisabled(False)
@@ -118,9 +127,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 tokens = print_data[i]
                 for j in range(len(tokens)):
                     obj = QTableWidgetItem(tokens[j])
-                    self.tableWidget.setItem(i,j,obj)
+                    self.tableWidget.setItem(i, j, obj)
             self.tableWidget.resizeColumnsToContents()
-        
+
         self.Sort_Date.setDisabled(False)
         self.Sort_Login.setDisabled(False)
         self.Save_Button.setDisabled(False)
@@ -136,19 +145,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         number_of_rows = self.tableWidget.rowCount()
         number_of_columns = self.tableWidget.columnCount()
-        fileName, ok = QInputDialog.getText(self, "ввод ", "введите имя файла без расширения", QLineEdit.Normal)
+        fileName, ok = QInputDialog.getText(self, "ввод ",
+                                            "введите имя файла без расширения",
+                                            QLineEdit.Normal)
         fileName += '.csv'
         file_path = os.path.join(self.logPath, fileName)
         if number_of_rows == 0:
             pass
         else:
-            for i in range(0,number_of_rows):
+            for i in range(0, number_of_rows):
                 row = []
-                for j in range(0,number_of_columns):
-                    tmp_item = self.tableWidget.item(i,j).text()
+                for j in range(0, number_of_columns):
+                    tmp_item = self.tableWidget.item(i, j).text()
                     row.append(tmp_item)
                 with open(fileName, 'a') as myFile:
-                    myWriter = csv.writer(myFile, delimiter=',', lineterminator='\n')
+                    myWriter = csv.writer(myFile, delimiter=',',
+                                          lineterminator='\n')
                     myWriter.writerow(row)
 
         self.Sort_Date.setDisabled(False)
@@ -170,18 +182,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             tokens = hundred[j]
             for k in range(0, len(tokens)):
                 obj = QTableWidgetItem(tokens[k])
-                self.tableWidget.setItem(j,k,obj)
-        
+                self.tableWidget.setItem(j, k, obj)
+
         self.Sort_Date.setDisabled(False)
         self.Sort_Login.setDisabled(False)
         self.Save_Button.setDisabled(False)
         self.Print_Button.setDisabled(False)
         self.Clear_Button.setDisabled(False)
 
-
     def on_Clear_Button_clicked(self):
         self.tableWidget.setRowCount(0)
         self.tableWidget.setColumnCount(0)
+
 
 def on_Print_Button_clicked_read(num_of_page, logPath1):
     try:
@@ -193,7 +205,7 @@ def on_Print_Button_clicked_read(num_of_page, logPath1):
             with open(log_path, "r") as fileInput:
                 for row in csv.reader(fileInput):
                     print_data.append(row)
-        
+
         hundred = []
         for i in range((num-1)*100, num*100, 1):
             try:
@@ -211,5 +223,6 @@ def main():
     main.show()
     sys.exit(app.exec_())
 
+
 if __name__ == "__main__":
-    main()    
+    main()
