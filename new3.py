@@ -54,6 +54,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.myPool.apply_async(func=on_Print_Button_clicked_read,
                                 args=(num_of_page, logPath1),
                                 callback=self.on_Print_Button_clicked)
+        self.Sort_Date.setDisabled(False)
+        self.Sort_Login.setDisabled(False)
+        self.Save_Button.setDisabled(False)
+        self.Print_Button.setDisabled(False)
+        self.Clear_Button.setDisabled(False)
 
     def on_Sort_Date_clicked(self):
         self.Sort_Date.setDisabled(True)
