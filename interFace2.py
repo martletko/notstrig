@@ -36,6 +36,7 @@ class Ui_MainWindow(object):
         self.Date_And_Time = QtWidgets.QDateTimeEdit(self.centralwidget)
         self.Date_And_Time.setGeometry(QtCore.QRect(50, 30, 194, 22))
         self.Date_And_Time.setObjectName(_fromUtf8("Date_And_Time"))
+        self.Date_And_Time.setDisplayFormat("yyyy-MM-dd hh:mm:ss")
 
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(20, 100, 821, 571))
@@ -93,4 +94,3 @@ class Ui_MainWindow(object):
         self.Save_Button.setText(_translate("MainWindow", "сохранить", None))
         self.Clear_Button.setText(_translate("MainWindow", "очистить", None))
         self.Print_Button.setText(_translate("MainWindow", "вывести", None))
-
