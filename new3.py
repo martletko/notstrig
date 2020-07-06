@@ -3,9 +3,13 @@ import time
 import os
 import csv
 
-from PySide2.QtCore import SIGNAL
-from PySide2.QtGui import QFont
+import PySide2
+
 from PySide2.QtWidgets import QApplication, QMainWindow, QLineEdit, QFormLayout, QInputDialog, QTableWidgetItem
+
+dirname = os.path.dirname(PySide2.__file__)
+plugin_path = os.path.join(dirname, 'plugins', 'platforms')
+os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
 
 from interFace2 import Ui_MainWindow
 
@@ -19,7 +23,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self)
         self.setupUi(self)
 
-        logFolderName, ok = QInputDialog.getText(self, "ввод логина", "введите логин для поиска", QLineEdit.Normal)
+        logFolderName, ok = QInputDialog.getText(self, "ввод логов", "введите путь до папки с логами", QLineEdit.Normal)
         self.logPath = logFolderName
 
         self.Sort_Date.clicked.connect(self.on_Sort_Date_clicked)
@@ -35,11 +39,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.myPool = mp.Pool(processes=1)
 
     def call_async(self):
+        self.Sort_Date.setDisabled(True)
+        self.Sort_Login.setDisabled(True)
+        self.Save_Button.setDisabled(True)
+        self.Print_Button.setDisabled(True)
+        self.Clear_Button.setDisabled(True)
         num_of_page = self.PageLineEdit.text()
         logPath1 = self.logPath
         self.myPool.apply_async(func=on_Print_Button_clicked_read, args=(num_of_page, logPath1), callback=self.on_Print_Button_clicked)
 
     def on_Sort_Date_clicked(self):
+        self.Sort_Date.setDisabled(True)
+        self.Sort_Login.setDisabled(True)
+        self.Save_Button.setDisabled(True)
+        self.Print_Button.setDisabled(True)
+        self.Clear_Button.setDisabled(True)
+
         self.tableWidget.setRowCount(0)
         self.tableWidget.setColumnCount(0)
         logs = os.listdir(self.logPath)
@@ -72,7 +87,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.tableWidget.setItem(i,j,obj)
             self.tableWidget.resizeColumnsToContents()
 
+        self.Sort_Date.setDisabled(False)
+        self.Sort_Login.setDisabled(False)
+        self.Save_Button.setDisabled(False)
+        self.Print_Button.setDisabled(False)
+        self.Clear_Button.setDisabled(False)
+
     def on_Sort_Login_clicked(self):
+        self.Sort_Date.setDisabled(True)
+        self.Sort_Login.setDisabled(True)
+        self.Save_Button.setDisabled(True)
+        self.Print_Button.setDisabled(True)
+        self.Clear_Button.setDisabled(True)
+
         text = self.Enter_Login.text()
         logs = os.listdir(self.logPath)
         print_data = []
@@ -93,8 +120,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     obj = QTableWidgetItem(tokens[j])
                     self.tableWidget.setItem(i,j,obj)
             self.tableWidget.resizeColumnsToContents()
+        
+        self.Sort_Date.setDisabled(False)
+        self.Sort_Login.setDisabled(False)
+        self.Save_Button.setDisabled(False)
+        self.Print_Button.setDisabled(False)
+        self.Clear_Button.setDisabled(False)
 
     def on_Save_Button_clicked(self):
+        self.Sort_Date.setDisabled(True)
+        self.Sort_Login.setDisabled(True)
+        self.Save_Button.setDisabled(True)
+        self.Print_Button.setDisabled(True)
+        self.Clear_Button.setDisabled(True)
+
         number_of_rows = self.tableWidget.rowCount()
         number_of_columns = self.tableWidget.columnCount()
         fileName, ok = QInputDialog.getText(self, "ввод ", "введите имя файла без расширения", QLineEdit.Normal)
@@ -109,10 +148,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tmp_item = self.tableWidget.item(i,j).text()
                     row.append(tmp_item)
                 with open(fileName, 'a') as myFile:
-                    myWriter = csv.writer(myFile, delimiter=',')
+                    myWriter = csv.writer(myFile, delimiter=',', lineterminator='\n')
                     myWriter.writerow(row)
 
+        self.Sort_Date.setDisabled(False)
+        self.Sort_Login.setDisabled(False)
+        self.Save_Button.setDisabled(False)
+        self.Print_Button.setDisabled(False)
+        self.Clear_Button.setDisabled(False)
+
     def on_Print_Button_clicked(self, hundred):
+        self.Sort_Date.setDisabled(True)
+        self.Sort_Login.setDisabled(True)
+        self.Save_Button.setDisabled(True)
+        self.Print_Button.setDisabled(True)
+        self.Clear_Button.setDisabled(True)
+
         for j in range(len(hundred)):
             self.tableWidget.setRowCount(len(hundred))
             self.tableWidget.setColumnCount(len(hundred[0]))
@@ -120,6 +171,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for k in range(0, len(tokens)):
                 obj = QTableWidgetItem(tokens[k])
                 self.tableWidget.setItem(j,k,obj)
+        
+        self.Sort_Date.setDisabled(False)
+        self.Sort_Login.setDisabled(False)
+        self.Save_Button.setDisabled(False)
+        self.Print_Button.setDisabled(False)
+        self.Clear_Button.setDisabled(False)
 
 
     def on_Clear_Button_clicked(self):
