@@ -2,9 +2,6 @@ import sys
 import time
 import os
 import csv
-import sip
-sip.setapi('QString', 2)
-sip.setapi('QVariant', 2)
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import SIGNAL
@@ -23,7 +20,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         logFolderName, ok = QtGui.QInputDialog.getText(self, "ввод логина", "введите логин для поиска", QtGui.QLineEdit.Normal)
-        self.logPath = os.path.join(os.getcwd(), logFolderName)
+        self.logPath = logFolderName
 
         self.Sort_Date.clicked.connect(self.on_Sort_Date_clicked)
 
